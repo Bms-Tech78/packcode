@@ -383,10 +383,8 @@
 
 <script>
   // === EMAIL WAITLIST ===
-  // To go live: sign up at https://loops.so (free up to 1k contacts),
-  // create a form, and paste your form ID below.
-  // Until then, submissions just show a thanks message (no email is stored).
-  const LOOPS_FORM_ID = "cmq412z2l2i4p0j01xx7vn2qk"; // PackCode waitlist
+  // Connected to Loops (https://loops.so) — form ID below
+  const LOOPS_FORM_ID = "cmq412z2l2i4p0j01xx7vn2qk";
 
   async function submitWaitlist(e, form, msgId) {
     e.preventDefault();
@@ -398,25 +396,41 @@
     btn.disabled = true;
 
     try {
-      if (LOOPS_FORM_ID) {
-        const fd = new FormData();
-        fd.append("email", email);
-        fd.append("userGroup", "PackCode Waitlist");
-        const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
-          method: "POST",
-          body: fd
-        });
-        if (!res.ok) throw new Error("submit failed");
+      if (!LOOPS_FORM_ID) throw new Error("No form ID configured");
+
+      // Loops expects URL-encoded form data
+      const body = new URLSearchParams();
+      body.append("email", email);
+      body.append("userGroup", "PackCode Waitlist");
+
+      const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || data.success === false) {
+        throw new Error(data.message || "submit failed");
       }
-      if (msgEl) msgEl.textContent = "✓ You're in! We'll email you at launch.";
+
+      if (msgEl) {
+        msgEl.textContent = "✓ You're in! We'll email you at launch.";
+        msgEl.style.color = "var(--accent-2)";
+      }
       form.reset();
     } catch (err) {
-      if (msgEl) msgEl.textContent = "⚠️ Something went wrong — try again?";
+      console.error("Waitlist error:", err);
+      if (msgEl) {
+        msgEl.textContent = "⚠️ Something went wrong — try again?";
+        msgEl.style.color = "#ff7a7a";
+      }
     } finally {
       btn.textContent = original;
       btn.disabled = false;
     }
   }
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0818dac885993f2',t:'MTc4MDg1NTE5NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
