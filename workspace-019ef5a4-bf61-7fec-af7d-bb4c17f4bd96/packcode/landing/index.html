@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PackCode — Pack your codebase for AI, in one click</title>
+<meta name="description" content="Drop your repo. Get a perfectly-packed, token-optimized prompt for Claude, GPT, and Gemini. Stop copy-pasting files." />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0a0f;
+    --bg-2: #111119;
+    --card: #15151f;
+    --border: #24243a;
+    --text: #e8e8f0;
+    --muted: #8a8aa0;
+    --accent: #7c5cff;
+    --accent-2: #4ee0c1;
+    --gradient: linear-gradient(135deg, #7c5cff 0%, #4ee0c1 100%);
+  }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: rgba(10,10,15,0.85); backdrop-filter: blur(10px); z-index: 50;
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+  .logo-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--gradient);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 10px;
+    background: var(--gradient); color: #0a0a0f; font-weight: 600;
+    text-decoration: none; font-size: 14px; border: none; cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(124,92,255,0.3); }
+  .btn-ghost {
+    background: transparent; color: var(--text); border: 1px solid var(--border);
+  }
+
+  /* HERO */
+  .hero { padding: 100px 0 80px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(600px circle at 50% 0%, rgba(124,92,255,0.15), transparent 60%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block; padding: 6px 14px; border-radius: 100px;
+    background: rgba(124,92,255,0.12); border: 1px solid rgba(124,92,255,0.3);
+    font-size: 12px; color: var(--accent); margin-bottom: 24px;
+    font-weight: 500;
+  }
+  h1 {
+    font-size: clamp(36px, 6vw, 64px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.02em; margin-bottom: 20px;
+  }
+  h1 .grad {
+    background: var(--gradient); -webkit-background-clip: text;
+    background-clip: text; color: transparent;
+  }
+  .sub {
+    font-size: clamp(16px, 2vw, 20px); color: var(--muted);
+    max-width: 620px; margin: 0 auto 36px;
+  }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .micro { font-size: 13px; color: var(--muted); }
+
+  /* WAITLIST FORM */
+  .waitlist {
+    display: flex; gap: 8px; max-width: 440px; margin: 0 auto;
+    background: var(--card); border: 1px solid var(--border); padding: 6px;
+    border-radius: 14px;
+  }
+  .waitlist input {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text); padding: 10px 14px; font-size: 14px; font-family: inherit;
+  }
+  .waitlist button {
+    padding: 10px 18px; border-radius: 10px; border: none;
+    background: var(--gradient); color: #0a0a0f; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: inherit;
+  }
+
+  /* DEMO MOCKUP */
+  .demo-wrap { padding: 40px 0 100px; }
+  .demo {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .demo-bar {
+    display: flex; gap: 8px; padding: 14px 18px;
+    background: var(--bg-2); border-bottom: 1px solid var(--border);
+  }
+  .demo-bar span { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+  .demo-body { display: grid; grid-template-columns: 280px 1fr; min-height: 380px; }
+  .demo-files { padding: 16px; border-right: 1px solid var(--border); font-size: 13px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .file-row { padding: 4px 0; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .file-row.on { color: var(--text); }
+  .file-row .cb { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--border); display: inline-block; }
+  .file-row.on .cb { background: var(--gradient); border-color: transparent; }
+  .demo-preview { padding: 20px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: var(--muted); overflow: hidden; }
+  .demo-preview .k { color: var(--accent-2); }
+  .demo-preview .s { color: #f0a;}
+  .token-bar { margin-top: 14px; height: 6px; background: var(--bg-2); border-radius: 100px; overflow: hidden; }
+  .token-fill { height: 100%; width: 38%; background: var(--gradient); }
+  .token-label { font-size: 11px; color: var(--muted); margin-top: 6px; display: flex; justify-content: space-between; }
+
+  /* SECTIONS */
+  section { padding: 80px 0; }
+  .section-title { text-align: center; margin-bottom: 50px; }
+  .section-title h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .section-title p { color: var(--muted); font-size: 16px; }
+
+  /* PROBLEM */
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .problem-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+  }
+  .problem-card .emoji { font-size: 28px; margin-bottom: 10px; }
+  .problem-card h3 { font-size: 16px; margin-bottom: 6px; }
+  .problem-card p { font-size: 14px; color: var(--muted); }
+
+  /* FEATURES */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .feature {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px;
+    transition: border-color .2s, transform .2s;
+  }
+  .feature:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .feature-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(124,92,255,0.15); display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .feature h3 { font-size: 17px; margin-bottom: 8px; }
+  .feature p { font-size: 14px; color: var(--muted); }
+
+  /* PRICING */
+  .pricing { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 820px; margin: 0 auto; }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px; position: relative;
+  }
+  .price-card.featured { border-color: var(--accent); }
+  .price-card.featured::before {
+    content: 'LAUNCH DEAL'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--gradient); color: #0a0a0f; font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 100px; letter-spacing: 0.05em;
+  }
+  .price-name { font-size: 14px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .price-amount { font-size: 42px; font-weight: 800; margin-bottom: 4px; }
+  .price-amount small { font-size: 14px; font-weight: 400; color: var(--muted); }
+  .price-desc { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .price-list { list-style: none; margin-bottom: 28px; }
+  .price-list li { padding: 8px 0; font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .price-list li::before { content: '✓'; color: var(--accent-2); font-weight: 700; }
+  .price-card .btn { display: block; text-align: center; }
+
+  /* FOOTER */
+  footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 720px) {
+    .demo-body { grid-template-columns: 1fr; }
+    .demo-files { border-right: none; border-bottom: 1px solid var(--border); }
+    .nav-links a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <div class="logo">
+      <div class="logo-mark">📦</div>
+      PackCode
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#waitlist" class="btn">Join waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="badge">🚀 Launching soon — join 200+ devs on the waitlist</div>
+    <h1>Pack your codebase for AI,<br/><span class="grad">in one click.</span></h1>
+    <p class="sub">Stop copy-pasting files into ChatGPT. Drop your repo, PackCode hands you a clean, token-optimized prompt — ready for Claude, GPT, Gemini, or Cursor.</p>
+    <div class="cta-row">
+      <form class="waitlist" onsubmit="submitWaitlist(event, this, 'msg')">
+        <input type="email" name="email" required placeholder="you@dev.com" />
+        <button type="submit">Get early access</button>
+      </form>
+    </div>
+    <p class="micro" id="msg">First 100 signups get <strong>lifetime Pro for £19</strong> (normally £29/yr).</p>
+  </div>
+</header>
+
+<div class="demo-wrap">
+  <div class="container">
+    <div class="demo">
+      <div class="demo-bar"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+      <div class="demo-body">
+        <div class="demo-files">
+          <div style="color:var(--text); margin-bottom:10px; font-weight:600;">📁 my-saas-app</div>
+          <div class="file-row on"><span class="cb"></span> 📄 package.json</div>
+          <div class="file-row on"><span class="cb"></span> 📁 src/</div>
+          <div class="file-row on" style="padding-left:20px;"><span class="cb"></span> 📄 app.tsx</div>
+          <div class="file-row on" style="padding-left:20px;"><span class="cb"></span> 📄 api.ts</div>
+          <div class="file-row" style="padding-left:20px;"><span class="cb"></span> 📄 types.ts</div>
+          <div class="file-row on"><span class="cb"></span> 📁 components/</div>
+          <div class="file-row" style="padding-left:20px;"><span class="cb"></span> 📄 Button.tsx</div>
+          <div class="file-row"><span class="cb"></span> 📁 node_modules/ <span style="color:#555;">(ignored)</span></div>
+          <div class="file-row"><span class="cb"></span> 📄 package-lock.json <span style="color:#555;">(ignored)</span></div>
+        </div>
+        <div class="demo-preview">
+          <div style="color:var(--text); margin-bottom:10px; font-weight:600; font-family:inherit;">Output preview</div>
+          <div><span class="k">&lt;codebase&gt;</span></div>
+          <div>&nbsp;&nbsp;<span class="k">&lt;file</span> path=<span class="s">"package.json"</span><span class="k">&gt;</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;{ "name": "my-saas-app", ...</div>
+          <div>&nbsp;&nbsp;<span class="k">&lt;/file&gt;</span></div>
+          <div>&nbsp;&nbsp;<span class="k">&lt;file</span> path=<span class="s">"src/app.tsx"</span><span class="k">&gt;</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;import React from 'react'...</div>
+          <div>&nbsp;&nbsp;<span class="k">&lt;/file&gt;</span></div>
+          <div><span class="k">&lt;/codebase&gt;</span></div>
+          <div class="token-bar"><div class="token-fill"></div></div>
+          <div class="token-label"><span>76,800 / 200,000 tokens</span><span style="color:var(--accent-2);">Claude Sonnet 4.5</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>The current options all suck.</h2>
+      <p>You know the pain. We're fixing it.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="emoji">😩</div>
+        <h3>Copy-pasting files</h3>
+        <p>One. By. One. You forget half of them and the AI gives you broken answers.</p>
+      </div>
+      <div class="problem-card">
+        <div class="emoji">💥</div>
+        <h3>Pasting the whole repo</h3>
+        <p>"Sorry, your message is too long." Plus you just leaked node_modules into the chat.</p>
+      </div>
+      <div class="problem-card">
+        <div class="emoji">⌨️</div>
+        <h3>CLI tools</h3>
+        <p>Install. Configure. Memorize flags. Re-run every time. There has to be a better way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
+    <div class="section-title">
+      <h2>Everything you need.<br/>Nothing you don't.</h2>
+      <p>Built by devs who got tired of feeding code to AI the hard way.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <h3>Smart defaults</h3>
+        <p>Auto-ignores node_modules, build folders, lockfiles, binaries, and anything in .gitignore. Just works.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Live token budget</h3>
+        <p>See exactly how many tokens each file uses. Stay under your model's limit. No more "message too long."</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <h3>Model-aware</h3>
+        <p>Pick GPT-5, Claude Sonnet 4.5, Gemini 2.5 Pro — output format auto-tuned for each model.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔗</div>
+        <h3>GitHub in one paste</h3>
+        <p>Drop a repo URL. Public repos free. Private repos with OAuth (Pro).</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💾</div>
+        <h3>Saved presets</h3>
+        <p>"Just my API routes." "Just the components." Save your packing recipes and reuse them.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Private by default</h3>
+        <p>Local uploads never touch our servers. Your code stays on your machine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="section-title">
+      <h2>Simple pricing.</h2>
+      <p>Free forever for personal use. Pro when you need more.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">Free</div>
+        <div class="price-amount">£0</div>
+        <div class="price-desc">Plenty for hobby projects.</div>
+        <ul class="price-list">
+          <li>Up to 50 files per pack</li>
+          <li>1 public GitHub repo per day</li>
+          <li>All output formats</li>
+          <li>All model presets</li>
+        </ul>
+        <a href="#waitlist" class="btn btn-ghost">Join waitlist</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-name">Pro Lifetime</div>
+        <div class="price-amount">£19 <small>one-time</small></div>
+        <div class="price-desc">First 100 signups only. Then £29.</div>
+        <ul class="price-list">
+          <li>Unlimited files & repos</li>
+          <li>Private GitHub repos</li>
+          <li>Saved presets</li>
+          <li>AI file summarization</li>
+          <li>CLI tool + API access</li>
+          <li>All future Pro features</li>
+        </ul>
+        <a href="#waitlist" class="btn">Claim lifetime deal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="waitlist">
+  <div class="container" style="text-align:center; max-width: 600px;">
+    <h2 style="font-size: 32px; margin-bottom: 16px;">Be first in line.</h2>
+    <p style="color: var(--muted); margin-bottom: 28px;">We're launching in ~2 weeks. Join the waitlist — early signups get the lifetime deal and shape what we build next.</p>
+    <form class="waitlist" onsubmit="submitWaitlist(event, this, 'msg-bottom')">
+      <input type="email" name="email" required placeholder="you@dev.com" />
+      <button type="submit">Get early access</button>
+    </form>
+    <p class="micro" id="msg-bottom" style="margin-top:12px;">&nbsp;</p>
+    <p class="micro" style="margin-top:6px;">No spam. One launch email. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 PackCode · Built in public on <a href="#">X</a> · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+  </div>
+</footer>
+
+<script>
+  // === EMAIL WAITLIST ===
+  // Connected to Loops (https://loops.so) — form ID below
+  const LOOPS_FORM_ID = "cmq412z2l2i4p0j01xx7vn2qk";
+
+  async function submitWaitlist(e, form, msgId) {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    const msgEl = document.getElementById(msgId);
+    const btn = form.querySelector("button");
+    const original = btn.textContent;
+    btn.textContent = "...";
+    btn.disabled = true;
+
+    try {
+      if (!LOOPS_FORM_ID) throw new Error("No form ID configured");
+
+      // Loops expects URL-encoded form data
+      const body = new URLSearchParams();
+      body.append("email", email);
+      body.append("userGroup", "PackCode Waitlist");
+
+      const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || data.success === false) {
+        throw new Error(data.message || "submit failed");
+      }
+
+      if (msgEl) {
+        msgEl.textContent = "✓ You're in! We'll email you at launch.";
+        msgEl.style.color = "var(--accent-2)";
+      }
+      form.reset();
+    } catch (err) {
+      console.error("Waitlist error:", err);
+      if (msgEl) {
+        msgEl.textContent = "⚠️ Something went wrong — try again?";
+        msgEl.style.color = "#ff7a7a";
+      }
+    } finally {
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

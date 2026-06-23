@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": null,
+  "rewrites": [
+    { "source": "/",          "destination": "/landing/index.html" },
+    { "source": "/app",       "destination": "/app/index.html" },
+    { "source": "/app/",      "destination": "/app/index.html" }
+  ],
+  "functions": {
+    "api/optimize.js": {
+      "maxDuration": 30
+    }
+  }
+}
