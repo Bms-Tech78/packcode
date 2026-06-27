@@ -47,4 +47,5 @@ packcode/
 - **Free:** 50 files/pack, 1 public repo/day
 - **Pro:** £9/mo OR £29 one-time lifetime
 - **Launch deal:** First 100 signups get lifetime for £19
-- **Goal:** £500/mo within 90 days → covers Apple dev fee + reinvests into ads
+- **Goal:** £500/mo within 90 days → covers Apple dev fee + reinvests into ads 
+.
