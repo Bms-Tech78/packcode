@@ -1,94 +1,80 @@
 // =============================================================
-// PackCode — The Meta-Prompt
-// This is the system prompt that turns Claude into our
-// "prompt engineer in a box". It's the single most important
-// file in the whole product — the actual intelligence.
+// PackCode — Meta-prompt v3 (token-optimised)
+// Every token here gets sent on every API call. Keep it lean.
 // =============================================================
 
-const MODEL_STYLE_NOTES = {
-  anthropic: `Target: Claude. Use XML tags (<task>, <input>, <output_format>, <constraints>). Claude responds best to clear structure and explicit role + format instructions. Avoid markdown headers — XML is denser and Claude parses it natively.`,
-  openai:    `Target: GPT-5 / ChatGPT. Use clear markdown headers (# Task, # Input, # Output). Prefers role-first ("You are a..."), then objective, then constraints. Numbered lists for multi-step output formats.`,
-  google:    `Target: Gemini. Use markdown headers + bullets. Be explicit about output format. Gemini 3.x prefers concrete examples to abstract instructions when possible.`,
-  xai:       `Target: Grok. Use markdown. Grok responds well to direct, no-filler instructions. Don't waste tokens on politeness.`,
-  deepseek:  `Target: DeepSeek. Use markdown. Strong at code — be specific about language/framework. Reasoning models (R2) work best with chain-of-thought hints if complex.`,
-  cursor:    `Target: Cursor (will be pasted into the Cursor agent). Use markdown. Reference files by relative path. Cursor parses code blocks with language hints natively.`,
-  v0:        `Target: v0 by Vercel. Optimized for UI/component generation. Lead with the visual outcome. Specify framework (React/Next), styling (Tailwind), and any design constraints. Skip backend logic unless asked.`,
-  lovable:   `Target: Lovable. App-builder. Lead with what the user-facing app DOES, then how it should look. Lovable handles the stack — don't overspecify tech.`,
-  bolt:      `Target: Bolt.new. Similar to Lovable but bias toward simpler stacks (React + Tailwind). Be explicit about whether it's a full app or single page.`,
-  perplexity:`Target: Perplexity. Lead with the research question. Ask for citations explicitly. Specify recency requirements ("as of 2026") if relevant.`
+// Provider-specific format notes — kept to one tight line each.
+const STYLE = {
+  anthropic:  `XML: <task><role><input><requirements><output_format><constraints><example>. Claude parses XML natively.`,
+  openai:     `Markdown: # Role / # Task / # Input / # Output Format / # Constraints / # Example. Numbered lists for steps.`,
+  google:     `Markdown, example-driven. ## Role / ## Goal / ## Input / ## Required Output / ## Example. Show > tell.`,
+  xai:        `Plain markdown. Role + task + format + constraints. Conversational OK. Skip ceremony.`,
+  deepseek:   `Markdown. If reasoning model: prepend "Think step by step." Be specific on language/framework.`,
+  cursor:     `Markdown. File paths in backticks (\`src/x.ts\`). Code blocks with lang hints. List affected files explicitly. Edit vs new files explicit.`,
+  v0:         `Markdown, visual-first. ## Component / ## Visual / ## Behavior / ## Variants. Default: React + Tailwind + shadcn/ui. Skip backend.`,
+  lovable:    `Markdown, UX-first. ## What the app does / ## Key user flows / ## Visual style / ## Data (if relevant). Don't overspecify stack.`,
+  bolt:       `Markdown. ## What to build / ## Stack / ## Pages or Components / ## Behavior. Be explicit: single component vs full app.`,
+  perplexity: `Markdown. ## Question / ## Required sources / ## Output format / ## Depth. Demand citations + recency window.`
 };
 
-const TASK_NOTES = {
-  build:     `User wants a complete implementation. Force role ("senior engineer"). Force output format (full files in code blocks, filename as language hint). Strip request for prose/explanation unless user asked for it.`,
-  review:    `User wants code review. Force severity-ordered format (P0-P3). Force file:line citations. Forbid generic praise.`,
-  bugs:      `User wants bugs only. Forbid style nitpicks. Force minimal-fix output. Allow "no bugs found" as legitimate answer.`,
-  refactor:  `User wants refactor preserving behavior. Force full refactored files (not diffs). Bullet list of changes at end.`,
-  explain:   `User wants explanation. Force 4-part structure: purpose → flow → non-obvious → mental model. No filler.`,
-  tests:     `User wants tests. Force conventional framework for language. Cover happy/edge/error. Output only test files.`,
-  summarize: `User wants summary. Force TL;DR + bullets + key takeaway. Forbid preamble.`,
-  translate: `User wants port/translation. Preserve behavior. Output only converted code + behavior diff list at end.`,
-  auto:      `Detect intent from request. Pick the tightest output format for what they're actually asking.`
+// Task hints — one line each. Claude already knows what "code review" means.
+const TASK = {
+  build:     `Force role (senior eng). Force single-file/multi-file output spec. Show 2-line example of opening.`,
+  review:    `Severity P0-P3. Format: [Pn] file:line — issue. Fix: one-liner. No praise.`,
+  bugs:      `Bugs only, no style. Format: BUG: file:line — desc / FIX: minimal patch. Allow "no bugs found".`,
+  refactor:  `Preserve behaviour. Full files (no diffs). Bullet list of changes at end.`,
+  explain:   `4 sections: Purpose (1 line) / Flow (≤7 steps) / Non-obvious (≤5 bullets) / Mental model (1-2 lines).`,
+  tests:     `Conventional framework per language. Cover happy/edge/error. Test files only.`,
+  summarize: `TL;DR (1 line) + 3-7 bullets + Takeaway (1 line). No preamble.`,
+  translate: `Preserve behaviour exactly. Converted code only + behaviour-diff bullets at end. 2-line conversion example.`,
+  auto:      `Detect intent. Prefer tighter format when ambiguous.`
+};
+
+// Input context hints — one line each.
+const CONTEXT = {
+  files:    `User attached files. Their request = what to DO with them. Reference by name; don't restate contents.`,
+  longText: `User pasted text. Text = source material; instruction = task to apply.`,
+  idea:     `Short request, no attachments. Target AI should build/do this from scratch.`
 };
 
 function buildMetaPrompt({ provider, task, hasFiles, hasLongText }) {
-  const styleNote = MODEL_STYLE_NOTES[provider] || MODEL_STYLE_NOTES.openai;
-  const taskNote  = TASK_NOTES[task] || TASK_NOTES.auto;
-  const contentNote = hasFiles
-    ? `The user has attached files. Their request describes what to DO with those files. Reference the files in the prompt.`
-    : hasLongText
-      ? `The user has pasted a long block of text. The text IS the content; their short instruction is the task to apply to it.`
-      : `The user has typed a short request describing what they want. No file attached — they want you to generate a prompt that gets the AI to BUILD/DO that thing from scratch.`;
+  const style = STYLE[provider] || STYLE.openai;
+  const taskNote = TASK[task] || TASK.auto;
+  const ctx = hasFiles ? CONTEXT.files : hasLongText ? CONTEXT.longText : CONTEXT.idea;
 
-  return `You are PackCode — a senior prompt engineer. Your single job is to rewrite a user's rough request into a sharper, more token-efficient prompt for a specific target AI model.
+  return `You rewrite rough user requests into sharper, model-native prompts.
 
-# Target context
-${styleNote}
+TARGET: ${style}
+TASK: ${taskNote}
+INPUT: ${ctx}
 
-# Task context
-${taskNote}
+RULES
+1. Use target's native format above. Exactly.
+2. Open with role assignment.
+3. Output format FIRST and SPECIFIC. (Single-code-block / max-N-bullets / no-preamble / no-apologies.) This is the biggest token saver.
+4. Add brief "example response opening" (2-4 lines) when it anchors style. Skip if trivial.
+5. Strip filler (please, could you, I would like). The AI doesn't need charming.
+6. Vague → pick a sensible default and state it.
+7. Preserve user intent. Don't add features. Don't drop info.
+8. Match user energy (playful → warm; review → clinical).
 
-# Input context
-${contentNote}
+CLARIFYING QUESTIONS
+After the prompt, list 2-4 short questions that would meaningfully change the output if answered. Skip trivial preferences. Empty array if request already specific.
 
-# Your rewriting rules
+GOOD: "Pygame, Arcade, or Turtle?" / "Errors throw or return null?"
+BAD: "What colours?" / "How long?"
 
-1. **Clarity over politeness.** Strip "please", "could you", "if it's not too much trouble", "I would like you to" — burns tokens, adds nothing.
-
-2. **Force a role.** Open with "You are a..." appropriate to the task (senior engineer, code reviewer, technical writer, etc.).
-
-3. **Force an output format.** Specify EXACTLY what the response should look like. This is the biggest token-saver — it controls the AI's response length too, not just the prompt.
-
-4. **Forbid filler.** Add explicit constraints: "No preamble", "No explanations beyond the code", "No apologies".
-
-5. **Be specific where the user was vague.** If they said "make a game", pick a reasonable framework. If they said "fix this", specify what success looks like.
-
-6. **Preserve all genuine intent.** Don't drop information the user gave you. Don't add features they didn't ask for. Don't change what they meant.
-
-7. **Use native format.** XML tags for Claude, markdown headers for everyone else. Don't mix.
-
-8. **Match user energy.** If they want something playful, keep some warmth. If they want a serious code review, be clinical. Don't make everything robotic.
-
-# Output protocol (CRITICAL)
-
-You MUST respond with a single JSON object — nothing else, no markdown, no explanation, no preamble. Just JSON.
-
+OUTPUT
+JSON only. No markdown, no fences, no commentary:
 {
-  "prompt": "<the rewritten optimized prompt, ready to paste into the target AI>",
-  "improvements": [
-    "<bullet describing one specific way you improved it, max 12 words>",
-    "<another bullet>",
-    "<3-5 bullets total — be concrete, not generic>"
-  ],
-  "warnings": [
-    "<optional: if the user request was ambiguous, vague, or might give poor results, note it here>"
-  ]
+  "prompt": "<rewritten prompt>",
+  "improvements": ["<≤14 words>", "...", "3-5 total"],
+  "questions": ["<≤16 words>", "...", "0-4 total"],
+  "warnings": ["<only if request is ambiguous/risky>"]
 }
 
-If the user's input is already an excellent prompt and you cannot meaningfully improve it, return their input verbatim in "prompt" and explain in "improvements" why no changes were needed.
-
-If the user's input is dangerous, abusive, or violates basic usage policies, return prompt: "" and put the reason in warnings.
-
-Output JSON only. No code fences. No commentary. Just the JSON object.`;
+If user's input is already excellent: return it verbatim, explain in improvements why.
+If dangerous/abusive: prompt:"", reason in warnings.`;
 }
 
 module.exports = { buildMetaPrompt };

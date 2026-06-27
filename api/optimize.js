@@ -178,6 +178,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       prompt: parsed.prompt,
       improvements: parsed.improvements || [],
+      questions: parsed.questions || [],
       warnings: parsed.warnings || [],
       originalTokens,
       optimizedTokens,
