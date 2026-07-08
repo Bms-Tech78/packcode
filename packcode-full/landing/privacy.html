@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — PackCode</title>
+<meta name="description" content="How PackCode handles your data. Short version: we collect almost nothing, your code never leaves your browser." />
+<link rel="icon" type="image/png" href="assets/logo-seal-only.png" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #14110D; --bg-2: #1A1611; --surface: #1F1A14; --surface-2: #25201A;
+    --border: #3D3528; --border-strong: #5A4F3A;
+    --text: #EDE4D3; --text-2: #C8BCA0; --text-3: #8F8470; --text-4: #5D5443;
+    --accent: #B8763D; --accent-hover: #D08A4E;
+    --accent-soft: rgba(184, 118, 61, 0.08); --accent-border: rgba(184, 118, 61, 0.28);
+    --font-display: "Tiempos Headline", "Iowan Old Style", "Georgia", serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  header {
+    padding: 22px 36px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 30;
+  }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 500; font-size: 19px; color: var(--text); text-decoration: none; letter-spacing: -0.005em; }
+  .brand-mark { width: 30px; height: 30px; background: url('assets/logo-seal-only.png') center/contain no-repeat; }
+  .nav-right { display: flex; gap: 6px; }
+  .nav-link { padding: 8px 14px; border-radius: 8px; font-size: 13.5px; color: var(--text-2); text-decoration: none; transition: all .15s; }
+  .nav-link:hover { background: var(--surface-2); color: var(--text); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 80px 24px; }
+  .kicker { display: inline-block; font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  h1 { font-family: var(--font-display); font-weight: 400; font-size: 48px; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+  h1 .em { color: var(--accent); font-style: italic; }
+  .meta { color: var(--text-3); font-size: 13px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  h2 { font-family: var(--font-display); font-weight: 500; font-size: 24px; letter-spacing: -0.005em; color: var(--text); margin-top: 48px; margin-bottom: 16px; }
+  p { color: var(--text-2); margin-bottom: 14px; }
+  ul { color: var(--text-2); margin: 10px 0 14px 22px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-hover); }
+  code { background: var(--surface); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-size: 13px; font-family: var(--font-mono); color: var(--text); }
+
+  .tldr {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 12px;
+    padding: 22px 26px; margin: 32px 0;
+  }
+  .tldr .tldr-label { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin-bottom: 8px; display: block; }
+  .tldr p { margin: 0; color: var(--text-2); }
+
+  footer { padding: 40px 36px 60px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; gap: 20px; max-width: 1200px; margin: 0 auto; }
+  footer .brand-small { display: inline-flex; align-items: center; gap: 10px; color: var(--text-2); font-family: var(--font-display); }
+  footer .brand-small-mark { width: 20px; height: 20px; background: url('assets/logo-seal-only.png') center/contain no-repeat; }
+  footer nav { display: flex; gap: 20px; }
+  footer nav a { color: var(--text-3); text-decoration: none; }
+  footer nav a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="brand"><div class="brand-mark"></div>PackCode</a>
+  <div class="nav-right">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/app" class="nav-link">App</a>
+    <a href="/terms" class="nav-link">Terms</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <span class="kicker">Legal</span>
+  <h1>Privacy <span class="em">policy</span></h1>
+  <div class="meta">Last updated: June 2026</div>
+
+  <div class="tldr">
+    <span class="tldr-label">The TL;DR</span>
+    <p>We collect almost nothing. Your code is processed in your browser and never sent to our servers. We store your email if you join the waitlist. Prompt rewrites go via Anthropic's Claude API — that call includes the text you typed but doesn't include any identifying info about you.</p>
+  </div>
+
+  <h2>1. Who we are</h2>
+  <p>PackCode (the "service") is an independent project operated from the United Kingdom. Contact: <a href="mailto:hello@packcode.dev">hello@packcode.dev</a>.</p>
+
+  <h2>2. What we collect</h2>
+  <p>We collect the minimum necessary to run the service:</p>
+  <ul>
+    <li><strong>Email address</strong> — only if you voluntarily join the waitlist or sign up for an account.</li>
+    <li><strong>Anonymous usage data</strong> — page views and button clicks via privacy-respecting analytics. No tracking cookies, no cross-site tracking, no IP storage.</li>
+    <li><strong>Request metadata</strong> — when you use the prompt optimiser, we briefly process your input via Anthropic's API. We log the IP address for rate-limiting only, and we don't store the input or the response after the request completes.</li>
+  </ul>
+
+  <h2>3. What we DON'T collect</h2>
+  <ul>
+    <li>We don't read, store, or transmit your code, folders, or repos. All file parsing happens client-side, in your browser.</li>
+    <li>We don't use third-party tracking cookies.</li>
+    <li>We don't sell, rent, or share your data with advertisers.</li>
+    <li>We don't profile you or build behavioural models.</li>
+  </ul>
+
+  <h2>4. Third-party services we use</h2>
+  <ul>
+    <li><strong>Anthropic (Claude API)</strong> — when you generate an optimised prompt, your input text is sent to Anthropic for processing. Anthropic's privacy terms apply to that request. They state they do not train on API requests by default.</li>
+    <li><strong>Loops</strong> — handles waitlist email collection.</li>
+    <li><strong>Vercel</strong> — hosts the website. Vercel may log request metadata for security/uptime per its own policy.</li>
+    <li><strong>Privacy-first analytics</strong> — anonymous, cookieless visitor counts (Plausible or equivalent).</li>
+  </ul>
+
+  <h2>5. Your rights (UK GDPR)</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li>Ask us what data we hold about you</li>
+    <li>Ask us to delete your data</li>
+    <li>Ask us to correct inaccurate data</li>
+    <li>Withdraw consent at any time (e.g. unsubscribe)</li>
+  </ul>
+  <p>Email <a href="mailto:hello@packcode.dev">hello@packcode.dev</a> and we'll handle it within 30 days.</p>
+
+  <h2>6. How long we keep data</h2>
+  <ul>
+    <li>Waitlist emails: until you unsubscribe.</li>
+    <li>Account data (when accounts launch): for as long as your account exists, plus 30 days after deletion for backups.</li>
+    <li>Rate-limit logs: 24 hours, then deleted.</li>
+  </ul>
+
+  <h2>7. Children</h2>
+  <p>PackCode is not intended for users under 13. We do not knowingly collect data from children under 13.</p>
+
+  <h2>8. Changes to this policy</h2>
+  <p>If we materially change this policy, we'll update the "last updated" date and, where appropriate, notify users by email.</p>
+
+  <h2>9. Complaints</h2>
+  <p>If you're in the UK and unhappy with how we handle your data, you can complain to the <a href="https://ico.org.uk">Information Commissioner's Office (ICO)</a>.</p>
+
+</main>
+
+<footer>
+  <div class="brand-small"><div class="brand-small-mark"></div>PackCode</div>
+  <nav>
+    <a href="/app">App</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </nav>
+  <div>© 2026 PackCode</div>
+</footer>
+
+</body>
+</html>

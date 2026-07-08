@@ -6,8 +6,23 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
-<title>PackCode — Token-efficient prompts for any AI</title>
-<meta name="description" content="Turn any idea, file, or codebase into a token-optimised prompt for your AI. Save money, get sharper answers." />
+<title>PackCode — Sharper prompts for any AI</title>
+<meta name="description" content="Turn any idea, file, or codebase into a token-efficient prompt. Sharper answers from Claude, GPT, Gemini, Cursor and more." />
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="assets/logo-seal-only.png" />
+<link rel="apple-touch-icon" href="assets/logo-seal-only.png" />
+
+<!-- Open Graph / social sharing -->
+<meta property="og:title" content="PackCode — Sharper prompts for any AI" />
+<meta property="og:description" content="Turn any idea, file, or codebase into a token-efficient prompt. Sharper answers from Claude, GPT, Gemini, Cursor and more." />
+<meta property="og:image" content="https://packcode.dev/app/assets/logo-lockup.png" />
+<meta property="og:url" content="https://packcode.dev/app" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PackCode — Sharper prompts for any AI" />
+<meta name="twitter:description" content="Turn any idea, file, or codebase into a token-efficient prompt." />
+<meta name="twitter:image" content="https://packcode.dev/app/assets/logo-lockup.png" />
 <style>
   /* ===========================================================
      PackCode v5 — Cognac Noir · Final build
@@ -130,11 +145,8 @@
 
   .seal {
     position: absolute; top: 50%; left: 50%;
-    width: 88px; height: 88px;
-    border: 2px solid var(--accent); border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-sans); font-weight: 600; font-size: 38px;
-    color: var(--accent); background: var(--bg);
+    width: 128px; height: 128px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
     transform: translate(-50%, -50%) scale(0.4);
     opacity: 0; filter: blur(8px);
     animation:
@@ -143,30 +155,30 @@
       sealMorph  0.95s cubic-bezier(.7,0,.3,1) 1.15s forwards;
   }
   @keyframes sealAppear {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); filter: blur(8px); box-shadow: 0 0 0 0 var(--accent-glow); }
-    70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.04); filter: blur(0); }
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px 4px var(--accent-glow); }
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); filter: blur(8px); }
+    70%  { opacity: 1; transform: translate(-50%, -50%) scale(1.06); filter: blur(0); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 32px rgba(160, 46, 36, 0.35)); }
   }
   @keyframes sealFlash {
-    0%, 100% { box-shadow: 0 0 40px 4px var(--accent-glow); }
-    50% { box-shadow: 0 0 80px 18px rgba(208, 138, 78, 0.55); }
+    0%, 100% { filter: blur(0) drop-shadow(0 0 24px rgba(160, 46, 36, 0.3)); }
+    50%      { filter: blur(0) drop-shadow(0 0 60px rgba(216, 105, 92, 0.7)); }
   }
   @keyframes sealMorph {
-    0%   { top: 50%; left: 50%; width: 88px; height: 88px; font-size: 38px; border-radius: 14px; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px 4px var(--accent-glow); }
-    100% { top: 22px; left: 36px; width: 28px; height: 28px; font-size: 13px; border-radius: 6px; transform: translate(0, 0) scale(1); box-shadow: 0 0 0 0 transparent; }
+    0%   { top: 50%; left: 50%; width: 128px; height: 128px; transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 32px rgba(160, 46, 36, 0.3)); }
+    100% { top: 22px; left: 36px; width: 30px; height: 30px; transform: translate(0, 0) scale(1); filter: drop-shadow(0 0 0 transparent); }
   }
 
   .seal-ring {
     position: absolute; top: 50%; left: 50%;
-    width: 88px; height: 88px;
-    border: 1px solid var(--accent); border-radius: 18px;
+    width: 128px; height: 128px;
+    border: 1px solid rgba(160, 46, 36, 0.6); border-radius: 50%;
     transform: translate(-50%, -50%) scale(1);
     opacity: 0; animation: ringPulse 1.1s ease 0.55s;
   }
   @keyframes ringPulse {
     0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.96); }
     40%  { opacity: 0.6; }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.55); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
   }
 
   .seal-label {
@@ -200,17 +212,14 @@
     color: var(--text);
   }
   .brand-mark {
-    width: 28px; height: 28px;
-    border: 1px solid var(--accent); border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
-    color: var(--accent); background: var(--bg);
-    opacity: 0; transition: box-shadow .3s, transform .3s, opacity .3s;
+    width: 30px; height: 30px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
+    opacity: 0; transition: transform .3s, opacity .3s, filter .3s;
   }
   .brand-mark.lit { opacity: 1; }
   .brand:hover .brand-mark {
-    box-shadow: 0 0 18px var(--accent-glow);
     transform: translateY(-1px);
+    filter: drop-shadow(0 4px 12px rgba(160, 46, 36, 0.4));
   }
   .brand-name { opacity: 0; transition: opacity .4s ease; }
   .brand-name.lit { opacity: 1; }
@@ -226,6 +235,87 @@
     transition: all .15s;
   }
   .nav-link:hover { background: var(--surface-2); color: var(--text); }
+  .nav-link.pro-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+  }
+  .nav-link.pro-pill:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .pro-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px var(--accent);
+    animation: proPulse 2s ease-in-out infinite;
+  }
+  @keyframes proPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  /* PRO WAITLIST MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(20, 17, 13, 0.75);
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 200; padding: 24px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-inner {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px 36px 32px;
+    max-width: 480px; width: 100%; text-align: center;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5); position: relative;
+    animation: modalIn .3s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal-seal-img {
+    width: 64px; height: 64px; margin: 0 auto 20px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
+  }
+  .modal-inner h3 {
+    font-family: var(--font-display); font-size: 26px; font-weight: 400;
+    margin-bottom: 10px; color: var(--text); letter-spacing: -0.01em;
+  }
+  .modal-inner h3 .em { color: var(--accent); font-style: italic; }
+  .modal-inner p { color: var(--text-3); font-size: 14px; margin-bottom: 22px; line-height: 1.55; }
+  .modal-tiers {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .modal-tier {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 12px; text-align: center;
+  }
+  .modal-tier .name { font-size: 10.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 6px; }
+  .modal-tier .price { font-family: var(--font-display); font-size: 22px; color: var(--text); }
+  .modal-tier .price small { font-size: 11px; color: var(--text-3); font-family: var(--font-sans); }
+  .modal-perks {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 12.5px; color: var(--text-2); text-align: left;
+  }
+  .modal-perks strong { color: var(--accent); }
+  .modal-inner input[type=email] {
+    width: 100%; padding: 14px 18px; border-radius: 12px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    color: var(--text); font-size: 14.5px; font-family: inherit;
+    margin-bottom: 12px;
+  }
+  .modal-inner input[type=email]:focus { outline: none; border-color: var(--accent); }
+  .modal-inner button.submit {
+    width: 100%; padding: 14px; border-radius: 12px; border: none;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 600; font-size: 14.5px; cursor: pointer;
+    transition: all .2s; font-family: inherit;
+  }
+  .modal-inner button.submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    background: none; border: none; color: var(--text-3);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    font-size: 20px; line-height: 1;
+  }
+  .modal-close:hover { background: var(--surface-2); color: var(--text); }
+  .modal-status { font-size: 12.5px; margin-top: 12px; min-height: 20px; }
+  .modal-status.success { color: var(--success); }
+  .modal-status.error { color: var(--danger); }
 
   /* ===========================================================
      VIEW SWITCH
@@ -697,7 +787,7 @@
 <div class="intro-layer" id="introLayer">
   <div class="intro-wash"></div>
   <div class="seal-ring"></div>
-  <div class="seal">P</div>
+  <div class="seal" aria-label="PackCode"></div>
   <div class="seal-label">PackCode</div>
 </div>
 
@@ -711,11 +801,14 @@
 
 <header>
   <a href="#" class="brand" onclick="goHome(); return false;">
-    <div class="brand-mark" id="brandMark">P</div>
+    <div class="brand-mark" id="brandMark" aria-label="PackCode"></div>
     <span class="brand-name" id="brandName">PackCode</span>
   </a>
   <div class="nav-right">
-    <a href="https://packcode.dev" class="nav-link">About</a>
+    <button class="nav-link pro-pill" onclick="openProModal()">
+      <span class="pro-dot"></span>Pro · Coming soon
+    </button>
+    <a href="/" class="nav-link">Home</a>
     <button class="nav-link" onclick="goHome()">New prompt</button>
   </div>
 </header>
@@ -876,10 +969,44 @@
 
 <footer>
   <div>PackCode <span class="dot">·</span> Processed locally <span class="dot">·</span> Your code never leaves your browser</div>
-  <div><a href="https://packcode.dev">packcode.dev</a></div>
+  <div>
+    <a href="/">Home</a>
+    <span class="dot">·</span>
+    <a href="/terms">Terms</a>
+    <span class="dot">·</span>
+    <a href="/privacy">Privacy</a>
+  </div>
 </footer>
 
 <div class="toast" id="toast">Copied</div>
+
+<!-- PRO WAITLIST MODAL -->
+<div class="modal-backdrop" id="proModal" onclick="if(event.target===this)closeProModal()">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeProModal()" aria-label="Close">×</button>
+    <div class="modal-seal-img" aria-hidden="true"></div>
+    <h3>Pro is launching <span class="em">soon.</span></h3>
+    <p>Unlimited rewrites, saved presets, private repos, priority AI. Join the waitlist for launch-day discount.</p>
+    <div class="modal-tiers">
+      <div class="modal-tier">
+        <div class="name">Monthly</div>
+        <div class="price">£5.99<small>/mo</small></div>
+      </div>
+      <div class="modal-tier">
+        <div class="name">Lifetime</div>
+        <div class="price">£49<small> once</small></div>
+      </div>
+    </div>
+    <div class="modal-perks">
+      <strong>Waitlist perks:</strong> 30% off first year · £29 lifetime for first 100 · founding member badge
+    </div>
+    <form onsubmit="submitProWaitlist(event, this)">
+      <input type="email" name="email" required placeholder="you@dev.com" />
+      <button class="submit" type="submit">Reserve my spot</button>
+    </form>
+    <p class="modal-status" id="proModalStatus"></p>
+  </div>
+</div>
 
 <script>
   /* ===========================================================
@@ -1497,6 +1624,57 @@
   renderProviders();
   updateSendButton();
   mainInput.focus();
+
+  // ============================================================
+  // PRO WAITLIST MODAL
+  // ============================================================
+  window.openProModal = function() {
+    document.getElementById('proModal').classList.add('open');
+    setTimeout(() => document.querySelector('#proModal input').focus(), 100);
+  };
+  window.closeProModal = function() {
+    document.getElementById('proModal').classList.remove('open');
+    document.getElementById('proModalStatus').textContent = '';
+    document.getElementById('proModalStatus').className = 'modal-status';
+  };
+
+  // Loops.so waitlist submission (shared with landing page)
+  const LOOPS_FORM_ID = "cmq412z2l2i4p0j01xx7vn2qk";
+  window.submitProWaitlist = async function(e, form) {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    const statusEl = document.getElementById('proModalStatus');
+    const btn = form.querySelector('button');
+    const orig = btn.textContent;
+    btn.textContent = "…"; btn.disabled = true;
+    statusEl.className = 'modal-status'; statusEl.textContent = '';
+    try {
+      const body = new URLSearchParams();
+      body.append("email", email);
+      body.append("userGroup", "PackCode Pro Waitlist");
+      const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error(data.message || "submit failed");
+      statusEl.className = 'modal-status success';
+      statusEl.textContent = "✓ You're on the list. We'll email you at launch.";
+      form.reset();
+      setTimeout(closeProModal, 1800);
+    } catch (err) {
+      statusEl.className = 'modal-status error';
+      statusEl.textContent = "Something went wrong — try again?";
+    } finally {
+      btn.textContent = orig; btn.disabled = false;
+    }
+  };
+
+  // Close modal on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeProModal();
+  });
 </script>
 </body>
 </html>

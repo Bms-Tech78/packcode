@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<title>PackCode — Sharper prompts for any AI</title>
+<meta name="description" content="Turn any idea, file, or codebase into a token-efficient prompt. Sharper answers from Claude, GPT, Gemini, Cursor and more." />
+
+<link rel="icon" type="image/png" href="assets/logo-seal-only.png" />
+<link rel="apple-touch-icon" href="assets/logo-seal-only.png" />
+
+<meta property="og:title" content="PackCode — Sharper prompts for any AI" />
+<meta property="og:description" content="Turn any idea, file, or codebase into a token-efficient prompt. Sharper answers from Claude, GPT, Gemini, Cursor and more." />
+<meta property="og:image" content="https://packcode.dev/assets/logo-lockup.png" />
+<meta property="og:url" content="https://packcode.dev" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PackCode — Sharper prompts for any AI" />
+<meta name="twitter:description" content="Turn any idea, file, or codebase into a token-efficient prompt." />
+<meta name="twitter:image" content="https://packcode.dev/assets/logo-lockup.png" />
+
+<style>
+  /* =========================================================
+     PackCode Landing — Cognac Noir · Wax Seal identity
+     ========================================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #14110D;
+    --bg-2: #1A1611;
+    --surface: #1F1A14;
+    --surface-2: #25201A;
+    --border: #3D3528;
+    --border-strong: #5A4F3A;
+    --text: #EDE4D3;
+    --text-2: #C8BCA0;
+    --text-3: #8F8470;
+    --text-4: #5D5443;
+    --accent: #B8763D;
+    --accent-hover: #D08A4E;
+    --accent-glow: rgba(184, 118, 61, 0.35);
+    --accent-soft: rgba(184, 118, 61, 0.08);
+    --accent-border: rgba(184, 118, 61, 0.28);
+    --accent-ink: #14110D;
+    --seal-red: #A02E24;
+    --success: #8FA078;
+
+    --font-display: "Tiempos Headline", "Iowan Old Style", "Georgia", serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  html, body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-sans); font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent-soft); color: var(--text); }
+
+  /* HEADER */
+  header {
+    padding: 22px 36px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid transparent; background: var(--bg);
+    position: sticky; top: 0; z-index: 50; transition: border-color .2s;
+  }
+  body.scrolled header { border-color: var(--border); }
+  .brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-display); font-weight: 500; font-size: 19px;
+    color: var(--text); letter-spacing: -0.005em;
+  }
+  .brand-mark {
+    width: 30px; height: 30px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
+    transition: transform .3s, filter .3s;
+  }
+  .brand:hover .brand-mark {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 4px 12px rgba(160, 46, 36, 0.4));
+  }
+  .nav-right { display: flex; gap: 6px; align-items: center; }
+  .nav-link {
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 13.5px; color: var(--text-2);
+    cursor: pointer; background: none; border: none;
+    transition: all .15s;
+  }
+  .nav-link:hover { background: var(--surface-2); color: var(--text); }
+  .nav-cta {
+    padding: 9px 18px; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 600; font-size: 13.5px;
+    transition: all .2s;
+  }
+  .nav-cta:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
+
+  /* HERO */
+  .hero {
+    min-height: calc(100vh - 74px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 24px 100px; text-align: center; position: relative;
+  }
+  .hero-lockup {
+    width: 260px; height: auto; max-width: 60vw;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 10px 40px rgba(160, 46, 36, 0.2));
+  }
+  .hero-tag {
+    display: inline-block; padding: 4px 12px;
+    background: var(--accent-soft); border: 1px solid var(--accent-border);
+    border-radius: 100px; color: var(--accent);
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(38px, 6vw, 62px); line-height: 1.02; letter-spacing: -0.02em;
+    max-width: 820px; margin-bottom: 20px;
+  }
+  h1 .em { color: var(--accent); font-style: italic; }
+  .hero-sub {
+    font-size: clamp(15px, 1.5vw, 18px); color: var(--text-2);
+    max-width: 620px; line-height: 1.6; margin-bottom: 36px;
+  }
+  .hero-cta {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    padding: 12px 22px; border-radius: 12px;
+    font-size: 14.5px; font-weight: 600;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 30px var(--accent-glow); }
+  .btn-secondary {
+    background: transparent; color: var(--text); border-color: var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); background: var(--surface); }
+  .btn-arrow { display: inline-block; transition: transform .2s; }
+  .btn-primary:hover .btn-arrow { transform: translateX(3px); }
+
+  /* SECTION SHARED */
+  section {
+    padding: 100px 24px; max-width: 1100px; margin: 0 auto;
+  }
+  .section-label {
+    display: inline-block; font-size: 11px; color: var(--accent);
+    font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(30px, 4.5vw, 42px); line-height: 1.1; letter-spacing: -0.015em;
+    max-width: 700px; margin-bottom: 18px;
+  }
+  h2 .em { color: var(--accent); font-style: italic; }
+  .section-sub {
+    font-size: 16px; color: var(--text-3); max-width: 620px; line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px;
+    transition: border-color .2s, transform .2s;
+  }
+  .step:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .step-num {
+    font-family: var(--font-display); font-size: 34px;
+    color: var(--accent); line-height: 1; margin-bottom: 12px;
+  }
+  .step h3 { font-family: var(--font-display); font-weight: 500; font-size: 20px; margin-bottom: 8px; color: var(--text); }
+  .step p { color: var(--text-3); font-size: 14.5px; line-height: 1.6; }
+
+  /* MODELS SHOWCASE */
+  .models {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px; max-width: 900px;
+  }
+  .model-chip {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 100px; padding: 10px 18px;
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13.5px; color: var(--text-2);
+    transition: all .15s;
+  }
+  .model-chip:hover { border-color: var(--accent); color: var(--text); }
+  .model-mark {
+    width: 20px; height: 20px; border-radius: 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px; max-width: 900px;
+  }
+  .plan {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 32px 28px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .plan.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+  }
+  .plan.featured::before {
+    content: 'MOST POPULAR'; position: absolute; top: 14px; right: 14px;
+    background: var(--accent); color: var(--accent-ink);
+    padding: 4px 10px; border-radius: 100px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  }
+  .plan-name {
+    font-size: 12px; color: var(--text-3); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 12px;
+  }
+  .plan-price {
+    font-family: var(--font-display); font-size: 42px;
+    color: var(--text); line-height: 1; margin-bottom: 4px;
+    letter-spacing: -0.015em;
+  }
+  .plan-price .period { font-size: 14px; color: var(--text-3); font-family: var(--font-sans); }
+  .plan-tagline { color: var(--text-3); font-size: 13.5px; margin-bottom: 24px; min-height: 20px; }
+  .plan-features { list-style: none; margin-bottom: 28px; flex: 1; }
+  .plan-features li {
+    padding: 8px 0; color: var(--text-2); font-size: 14px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .check {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; flex-shrink: 0; margin-top: 2px;
+  }
+  .plan-cta {
+    display: block; text-align: center;
+    padding: 12px; border-radius: 12px;
+    font-weight: 600; font-size: 14px;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .plan-cta.primary { background: var(--accent); color: var(--accent-ink); }
+  .plan-cta.primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .plan-cta.ghost { background: transparent; color: var(--text-2); border-color: var(--border); }
+  .plan-cta.ghost:hover { border-color: var(--accent); color: var(--text); }
+  .plan-cta.pending {
+    background: transparent; color: var(--accent);
+    border-color: var(--accent-border);
+    cursor: pointer;
+  }
+  .plan-cta.pending:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .plan-note {
+    font-size: 11.5px; color: var(--text-4); text-align: center;
+    margin-top: 12px; line-height: 1.5;
+  }
+
+  /* WAITLIST MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(20, 17, 13, 0.75);
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 24px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 40px 36px 32px;
+    max-width: 460px; width: 100%; text-align: center;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    animation: modalIn .3s cubic-bezier(.2,.8,.3,1);
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .modal-seal {
+    width: 64px; height: 64px; margin: 0 auto 20px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
+  }
+  .modal h3 { font-family: var(--font-display); font-size: 26px; font-weight: 400; margin-bottom: 10px; color: var(--text); letter-spacing: -0.01em; }
+  .modal h3 .em { color: var(--accent); font-style: italic; }
+  .modal p { color: var(--text-3); font-size: 14px; margin-bottom: 24px; line-height: 1.55; }
+  .modal input[type=email] {
+    width: 100%; padding: 14px 18px; border-radius: 12px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    color: var(--text); font-size: 14.5px; font-family: inherit;
+    margin-bottom: 12px;
+  }
+  .modal input[type=email]:focus { outline: none; border-color: var(--accent); }
+  .modal button.submit {
+    width: 100%; padding: 14px; border-radius: 12px; border: none;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 600; font-size: 14.5px; cursor: pointer;
+    transition: all .2s; font-family: inherit;
+  }
+  .modal button.submit:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .modal .close {
+    position: absolute; top: 12px; right: 12px;
+    background: none; border: none; color: var(--text-3);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+    font-size: 20px; line-height: 1;
+  }
+  .modal .close:hover { background: var(--surface-2); color: var(--text); }
+  .modal-perks {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    font-size: 12.5px; color: var(--text-2); text-align: left;
+  }
+  .modal-perks strong { color: var(--accent); }
+  .modal-status { font-size: 12.5px; margin-top: 12px; min-height: 20px; }
+  .modal-status.success { color: var(--success); }
+  .modal-status.error { color: #C56A57; }
+
+  /* FINAL CTA */
+  .final-cta {
+    padding: 100px 24px; text-align: center;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    border-top: 1px solid var(--border);
+  }
+  .final-cta h2 { margin: 0 auto 18px; }
+  .final-cta p { color: var(--text-3); font-size: 16px; margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 36px 60px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; gap: 20px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  footer .brand-small {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--text-2); font-family: var(--font-display);
+  }
+  footer .brand-small-mark {
+    width: 20px; height: 20px;
+    background: url('assets/logo-seal-only.png') center/contain no-repeat;
+  }
+  footer nav { display: flex; gap: 20px; }
+  footer nav a { color: var(--text-3); }
+  footer nav a:hover { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    header { padding: 18px 20px; }
+    section { padding: 60px 20px; }
+    .hero { padding: 40px 20px 80px; }
+    .hero-lockup { width: 200px; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="brand">
+    <div class="brand-mark" aria-hidden="true"></div>
+    PackCode
+  </a>
+  <div class="nav-right">
+    <a href="#how" class="nav-link">How it works</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="/app" class="nav-cta">Open App</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-lockup" src="assets/logo-lockup.png" alt="PackCode" />
+  <span class="hero-tag">Sharper prompts · Less waste</span>
+  <h1>Turn <span class="em">rough ideas</span> into prompts that actually work.</h1>
+  <p class="hero-sub">Drop your input — a scribbled idea, a file, a whole repo. PackCode rewrites it into a token-efficient prompt tuned for your AI. Sharper answers, tighter output, no more talking to the model like a stranger.</p>
+  <div class="hero-cta">
+    <a href="/app" class="btn btn-primary">Try it free <span class="btn-arrow">→</span></a>
+    <a href="#how" class="btn btn-secondary">See how it works</a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <span class="section-label">The Process</span>
+  <h2>Three steps. <span class="em">One clean prompt.</span></h2>
+  <p class="section-sub">No fluff, no wizardry. Just prompt engineering baked in.</p>
+  <div class="how">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Describe what you want</h3>
+      <p>Type an idea, paste text, drop a file, or link a GitHub repo. However rough it is, that's your input.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>PackCode rewrites it</h3>
+      <p>Claude-powered engine rewrites your input into a model-native prompt with role, format constraints, and structure — plus flags questions you should answer.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Send to your AI</h3>
+      <p>Copy the optimised prompt or one-click send to Claude, ChatGPT, Cursor, Gemini, v0, Lovable, and more. Get sharper answers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section>
+  <span class="section-label">Works with</span>
+  <h2>Every model you actually use.</h2>
+  <p class="section-sub">Ten providers. Every major current model. Each prompt tuned to the format your target AI parses best.</p>
+  <div class="models">
+    <div class="model-chip"><span class="model-mark" style="background:#C96442">C</span>Claude</div>
+    <div class="model-chip"><span class="model-mark" style="background:#10A37F">G</span>ChatGPT</div>
+    <div class="model-chip"><span class="model-mark" style="background:#4285F4">G</span>Gemini</div>
+    <div class="model-chip"><span class="model-mark" style="background:#1C1B1A">X</span>Grok</div>
+    <div class="model-chip"><span class="model-mark" style="background:#20808D">P</span>Perplexity</div>
+    <div class="model-chip"><span class="model-mark" style="background:#4D6BFE">D</span>DeepSeek</div>
+    <div class="model-chip"><span class="model-mark" style="background:#000">C</span>Cursor</div>
+    <div class="model-chip"><span class="model-mark" style="background:#000">V</span>v0</div>
+    <div class="model-chip"><span class="model-mark" style="background:#FF6B9D">L</span>Lovable</div>
+    <div class="model-chip"><span class="model-mark" style="background:#1389FD">B</span>Bolt</div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <span class="section-label">Pricing</span>
+  <h2>Free to start. <span class="em">Pay when it saves you serious time.</span></h2>
+  <p class="section-sub">Free forever for daily use. Pro unlocks unlimited rewrites, presets, and priority AI.</p>
+  <div class="pricing-grid">
+
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">£0<span class="period">/month</span></div>
+      <p class="plan-tagline">The daily driver.</p>
+      <ul class="plan-features">
+        <li><span class="check">✓</span>5 rewrites per day</li>
+        <li><span class="check">✓</span>All models supported</li>
+        <li><span class="check">✓</span>File & GitHub input</li>
+        <li><span class="check">✓</span>One-click send to any AI</li>
+        <li><span class="check">✓</span>Processed locally — private</li>
+      </ul>
+      <a href="/app" class="plan-cta ghost">Try it now</a>
+    </div>
+
+    <div class="plan featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">£5.99<span class="period">/month</span></div>
+      <p class="plan-tagline">For serious builders.</p>
+      <ul class="plan-features">
+        <li><span class="check">✓</span>Unlimited rewrites</li>
+        <li><span class="check">✓</span>Priority AI (faster tier)</li>
+        <li><span class="check">✓</span>Save presets & favourite prompts</li>
+        <li><span class="check">✓</span>Private GitHub repos</li>
+        <li><span class="check">✓</span>Early access to new features</li>
+        <li><span class="check">✓</span>Email support</li>
+      </ul>
+      <button class="plan-cta pending" onclick="openWaitlist('monthly')">Join Pro waitlist</button>
+      <p class="plan-note">Launching soon. Waitlist members get <strong style="color:var(--accent)">30% off first year</strong>.</p>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Lifetime</div>
+      <div class="plan-price">£49<span class="period"> once</span></div>
+      <p class="plan-tagline">Pay once. Yours forever.</p>
+      <ul class="plan-features">
+        <li><span class="check">✓</span>Everything in Pro</li>
+        <li><span class="check">✓</span>All future features included</li>
+        <li><span class="check">✓</span>No recurring fees, ever</li>
+        <li><span class="check">✓</span>Founding member badge</li>
+      </ul>
+      <button class="plan-cta pending" onclick="openWaitlist('lifetime')">Join Lifetime waitlist</button>
+      <p class="plan-note">First 100 lifetime buyers pay just <strong style="color:var(--accent)">£29</strong>.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>Stop wasting prompts. <span class="em">Start today.</span></h2>
+  <p>Free to try. No signup for the free tier. Your code stays in your browser.</p>
+  <a href="/app" class="btn btn-primary">Open PackCode <span class="btn-arrow">→</span></a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="brand-small">
+    <div class="brand-small-mark"></div>
+    PackCode
+  </div>
+  <nav>
+    <a href="/app">App</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </nav>
+  <div>© 2026 PackCode</div>
+</footer>
+
+<!-- WAITLIST MODAL -->
+<div class="modal-backdrop" id="modal" onclick="if(event.target===this)closeWaitlist()">
+  <div class="modal" style="position: relative;">
+    <button class="close" onclick="closeWaitlist()" aria-label="Close">×</button>
+    <div class="modal-seal" aria-hidden="true"></div>
+    <h3>You<span class="em">'re</span> in early.</h3>
+    <p id="modalCopy">Join the waitlist and get 30% off your first year when Pro launches.</p>
+    <div class="modal-perks" id="modalPerks">
+      <strong>What you get:</strong> 30% off first year · early access · founding member badge
+    </div>
+    <form onsubmit="submitWaitlist(event, this, 'modalStatus')">
+      <input type="email" name="email" required placeholder="you@dev.com" />
+      <button class="submit" type="submit">Get early access</button>
+    </form>
+    <p class="modal-status" id="modalStatus"></p>
+  </div>
+</div>
+
+<script>
+  // Scroll header border
+  document.addEventListener('scroll', () => {
+    document.body.classList.toggle('scrolled', window.scrollY > 4);
+  });
+
+  // Waitlist modal
+  function openWaitlist(tier) {
+    const modal = document.getElementById('modal');
+    const copy = document.getElementById('modalCopy');
+    const perks = document.getElementById('modalPerks');
+    if (tier === 'lifetime') {
+      copy.textContent = 'Join the Lifetime waitlist. First 100 members pay just £29 (usually £49).';
+      perks.innerHTML = '<strong>What you get:</strong> £29 lifetime price (save £20) · founding member badge · all future features';
+    } else {
+      copy.textContent = 'Join the Pro waitlist and get 30% off your first year when Pro launches.';
+      perks.innerHTML = '<strong>What you get:</strong> 30% off first year · early access · founding member badge';
+    }
+    modal.classList.add('open');
+    setTimeout(() => modal.querySelector('input').focus(), 100);
+  }
+  function closeWaitlist() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  // Loops.so integration
+  const LOOPS_FORM_ID = "cmq412z2l2i4p0j01xx7vn2qk";
+  async function submitWaitlist(e, form, msgId) {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    const msgEl = document.getElementById(msgId);
+    const btn = form.querySelector("button");
+    const orig = btn.textContent;
+    btn.textContent = "…"; btn.disabled = true;
+    msgEl.className = "modal-status";
+    msgEl.textContent = "";
+    try {
+      if (!LOOPS_FORM_ID) throw new Error("no_form_id");
+      const body = new URLSearchParams();
+      body.append("email", email);
+      body.append("userGroup", "PackCode Waitlist");
+      const res = await fetch(`https://app.loops.so/api/newsletter-form/${LOOPS_FORM_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.success === false) throw new Error(data.message || "submit failed");
+      msgEl.className = "modal-status success";
+      msgEl.textContent = "✓ You're in. We'll email you at launch.";
+      form.reset();
+      setTimeout(closeWaitlist, 1800);
+    } catch (err) {
+      msgEl.className = "modal-status error";
+      msgEl.textContent = "Something went wrong — try again?";
+    } finally {
+      btn.textContent = orig; btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>

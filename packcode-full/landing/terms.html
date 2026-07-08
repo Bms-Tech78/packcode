@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms of Service — PackCode</title>
+<meta name="description" content="The rules for using PackCode. Plain English where possible." />
+<link rel="icon" type="image/png" href="assets/logo-seal-only.png" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #14110D; --bg-2: #1A1611; --surface: #1F1A14; --surface-2: #25201A;
+    --border: #3D3528; --border-strong: #5A4F3A;
+    --text: #EDE4D3; --text-2: #C8BCA0; --text-3: #8F8470; --text-4: #5D5443;
+    --accent: #B8763D; --accent-hover: #D08A4E;
+    --accent-soft: rgba(184, 118, 61, 0.08); --accent-border: rgba(184, 118, 61, 0.28);
+    --font-display: "Tiempos Headline", "Iowan Old Style", "Georgia", serif;
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  header { padding: 22px 36px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 30; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 500; font-size: 19px; color: var(--text); text-decoration: none; letter-spacing: -0.005em; }
+  .brand-mark { width: 30px; height: 30px; background: url('assets/logo-seal-only.png') center/contain no-repeat; }
+  .nav-right { display: flex; gap: 6px; }
+  .nav-link { padding: 8px 14px; border-radius: 8px; font-size: 13.5px; color: var(--text-2); text-decoration: none; transition: all .15s; }
+  .nav-link:hover { background: var(--surface-2); color: var(--text); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 80px 24px; }
+  .kicker { display: inline-block; font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  h1 { font-family: var(--font-display); font-weight: 400; font-size: 48px; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+  h1 .em { color: var(--accent); font-style: italic; }
+  .meta { color: var(--text-3); font-size: 13px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  h2 { font-family: var(--font-display); font-weight: 500; font-size: 24px; letter-spacing: -0.005em; color: var(--text); margin-top: 48px; margin-bottom: 16px; }
+  p { color: var(--text-2); margin-bottom: 14px; }
+  ul { color: var(--text-2); margin: 10px 0 14px 22px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-hover); }
+
+  .tldr { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 22px 26px; margin: 32px 0; }
+  .tldr .tldr-label { color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin-bottom: 8px; display: block; }
+  .tldr p { margin: 0; color: var(--text-2); }
+
+  footer { padding: 40px 36px 60px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; gap: 20px; max-width: 1200px; margin: 0 auto; }
+  footer .brand-small { display: inline-flex; align-items: center; gap: 10px; color: var(--text-2); font-family: var(--font-display); }
+  footer .brand-small-mark { width: 20px; height: 20px; background: url('assets/logo-seal-only.png') center/contain no-repeat; }
+  footer nav { display: flex; gap: 20px; }
+  footer nav a { color: var(--text-3); text-decoration: none; }
+  footer nav a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="brand"><div class="brand-mark"></div>PackCode</a>
+  <div class="nav-right">
+    <a href="/" class="nav-link">Home</a>
+    <a href="/app" class="nav-link">App</a>
+    <a href="/privacy" class="nav-link">Privacy</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <span class="kicker">Legal</span>
+  <h1>Terms of <span class="em">service</span></h1>
+  <div class="meta">Last updated: June 2026</div>
+
+  <div class="tldr">
+    <span class="tldr-label">The TL;DR</span>
+    <p>Use PackCode to do useful things. Don't use it for illegal or abusive stuff. The service is provided as-is — if you're using it for critical work, double-check the output. We're a small independent operation; we may change features or pricing with notice.</p>
+  </div>
+
+  <h2>1. Acceptance</h2>
+  <p>By using PackCode (the "service"), you agree to these terms. If you don't agree, please don't use the service.</p>
+
+  <h2>2. What the service does</h2>
+  <p>PackCode rewrites your text prompts into more effective, token-efficient versions tuned for specific AI models. The rewrites are generated by Anthropic's Claude API.</p>
+
+  <h2>3. Acceptable use</h2>
+  <p>You agree NOT to use the service to:</p>
+  <ul>
+    <li>Generate content that's illegal, harmful, harassing, or sexually exploitative</li>
+    <li>Attempt to bypass rate limits, scrape the service, or reverse-engineer the API</li>
+    <li>Generate content that infringes intellectual property rights</li>
+    <li>Use the service in ways that violate Anthropic's own usage policies</li>
+    <li>Resell access to the service without explicit written permission</li>
+  </ul>
+  <p>We may suspend or terminate access for any user who violates these terms.</p>
+
+  <h2>4. Your content</h2>
+  <p>You retain ownership of any text or code you submit to PackCode. You grant us a limited, temporary licence to process that content solely to provide the service (i.e. send it to Claude and return the result). We do not store your content after processing.</p>
+
+  <h2>5. Output</h2>
+  <p>The optimised prompts generated by PackCode are yours to use freely. Note: AI-generated content has known limitations — always review output before relying on it for important work.</p>
+
+  <h2>6. Free tier and paid plans</h2>
+  <p>The service currently offers a free tier with daily usage limits. Paid plans (Pro / Lifetime) are launching soon. When they go live, terms specific to billing, refunds, and cancellation will be added here. Users on the waitlist will be notified before charges begin.</p>
+
+  <h2>7. Availability</h2>
+  <p>We aim for high availability but make no formal uptime guarantees. The service is provided "as-is" without warranties of any kind.</p>
+
+  <h2>8. Limitation of liability</h2>
+  <p>To the maximum extent permitted by law, PackCode is not liable for any indirect, incidental, or consequential damages arising from your use of the service. Our total liability for any claim shall not exceed the amount you paid us in the preceding 12 months (which, on the free tier, is zero).</p>
+
+  <h2>9. Changes to the service</h2>
+  <p>We may add, change, or remove features at any time. We'll provide reasonable notice for significant changes that affect existing users.</p>
+
+  <h2>10. Termination</h2>
+  <p>You can stop using the service at any time. We may suspend or terminate your access if you breach these terms or if we need to discontinue the service entirely (with reasonable notice).</p>
+
+  <h2>11. Governing law</h2>
+  <p>These terms are governed by the laws of England and Wales. Any disputes will be handled by the English courts.</p>
+
+  <h2>12. Contact</h2>
+  <p>For any questions about these terms, email <a href="mailto:hello@packcode.dev">hello@packcode.dev</a>.</p>
+
+</main>
+
+<footer>
+  <div class="brand-small"><div class="brand-small-mark"></div>PackCode</div>
+  <nav>
+    <a href="/app">App</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+  </nav>
+  <div>© 2026 PackCode</div>
+</footer>
+
+</body>
+</html>
